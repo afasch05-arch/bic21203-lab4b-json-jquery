@@ -1,0 +1,72 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lab 4b Question 2</title>
+</head>
+<body>
+
+    <h1>Book Information</h1>
+
+    <h2>Selected Book Details</h2>
+
+    <p id="firstTitle"></p>
+    <p id="secondAuthor"></p>
+
+    <h2>Genres of Both Books</h2>
+
+    <p id="book1Genres"></p>
+    <p id="book2Genres"></p>
+
+    <p id="status" role="status" aria-live="polite"></p>
+
+    <script>
+        async function loadBooks() {
+            try {
+                // Read the JSON file
+                const response = await fetch("books.json");
+
+                if (!response.ok) {
+                    throw new Error("Failed to load JSON");
+                }
+
+                // Convert JSON into JavaScript data
+                const data = await response.json();
+
+                if (!Array.isArray(data.books) || data.books.length < 2) {
+                    throw new Error("Invalid book data");
+                }
+
+                // Select the two books
+                const book1 = data.books[0];
+                const book2 = data.books[1];
+
+                // Display the first book title
+                document.getElementById("firstTitle").textContent =
+                    "First Book Title: " + book1.title;
+
+                // Display the second book author
+                document.getElementById("secondAuthor").textContent =
+                    "Second Book Author: " + book2.author;
+
+                // Display genres of the first book
+                document.getElementById("book1Genres").textContent =
+                    book1.title + " — " + book1.genres.join(", ");
+
+                // Display genres of the second book
+                document.getElementById("book2Genres").textContent =
+                    book2.title + " — " + book2.genres.join(", ");
+
+            } catch (error) {
+                document.getElementById("status").textContent =
+                    "Unable to load book information. Please check the JSON file.";
+            }
+        }
+
+        // Run the function when the page loads
+        loadBooks();
+    </script>
+
+</body>
+</html>
